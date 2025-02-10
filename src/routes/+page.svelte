@@ -1,25 +1,6 @@
-<script>
-    import "bootstrap/dist/css/bootstrap.min.css";
-</script>
-
-<div class="navbar d-flex bg-dark">
-    <img src="/cinema_old_icon.svg" alt="Logo" class="logo icon-fluid" />
-
-    <div class="navbar-nav">
-        <ul>
-            <li>
-                <a class="button" href="/">Home</a>
-            </li>
-            <li>
-                <a class="button" href="/movies">Movies</a>
-            </li>
-            <li>
-                <a class="button" href="/actors">Actors</a>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<main>
-    <h1>hola</h1>
+<main class="text-center p-10 bg-gray-50 mt-[3rem]">
+<h1 class="text-4xl font-bold text-neutral-950">Bienvenido a Absolute Cinema 🎬</h1>
+<p class="text-gray-900 mt-4">
+    Explora nuestra colección de películas y actores famosos.
+</p>
 </main>
