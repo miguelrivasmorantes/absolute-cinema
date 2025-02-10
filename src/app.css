@@ -1,0 +1,13 @@
+@import "tailwindcss";
+.navbar{
+    padding: 20px 100px !important;
+  }
+  
+  .logo {
+    filter: invert(0.9);
+    width: 70px;
+  }
+  
+  main{
+    background-color: #FFFFFF;
+  }
