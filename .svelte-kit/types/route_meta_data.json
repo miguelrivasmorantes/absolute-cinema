@@ -1,6 +1,9 @@
 {
 	"/": [],
 	"/actors": [],
+	"/directors": [],
+	"/genres": [],
 	"/home": [],
-	"/movies": []
+	"/movies": [],
+	"/studios": []
 }
