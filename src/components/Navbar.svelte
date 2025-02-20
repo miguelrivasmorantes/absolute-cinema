@@ -1,7 +1,5 @@
-<!-- src/components/Navbar.svelte -->
 <script>
-    // Puedes agregar lógica aquí si es necesario
-  </script>
+</script>
   
   <nav class="navbar">
     <img src="/cinema_old_icon.svg" alt="Logo" class="logo icon-fluid" />
@@ -14,7 +12,6 @@
     </div>
   </nav>
   
-  <style>
-    /* Puedes agregar estilos personalizados aquí */
-  </style>
+<style>
+</style>
   
