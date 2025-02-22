@@ -221,7 +221,7 @@
   function selectGenre(genre: string) {
     if (!selectedGenres.includes(genre)) {
       selectedGenres = [...selectedGenres, genre];
-      availableGenres = availableGenres.filter((g) => g !== genre); // 🔹 Lo elimina del dropdown
+      availableGenres = availableGenres.filter((g) => g !== genre);
     }
 
     showGenreDropdown = false;
@@ -230,23 +230,36 @@
 
   function removeGenre(genre: string) {
     selectedGenres = selectedGenres.filter((g) => g !== genre);
-    availableGenres = [...availableGenres, genre].sort(); // 🔹 Lo vuelve a agregar ordenado
+    availableGenres = [...availableGenres, genre].sort();
 
     updateFilters({ page: 1 });
   }
 
   onMount(() => {
     function handleClick(event: MouseEvent) {
-      const dropdown = document.getElementById("genre-dropdown");
-      const button = document.getElementById("genre-button");
+      const dropdowns = document.querySelectorAll(".dropdown-menu");
+      const buttons = document.querySelectorAll(".filter-button");
 
-      if (
-        dropdown &&
-        button &&
-        !dropdown.contains(event.target as Node) &&
-        !button.contains(event.target as Node)
-      ) {
+      let clickedInsideDropdown = false;
+      let clickedInsideButton = false;
+
+      dropdowns.forEach((dropdown) => {
+        if (dropdown.contains(event.target as Node)) {
+          clickedInsideDropdown = true;
+        }
+      });
+
+      buttons.forEach((button) => {
+        if (button.contains(event.target as Node)) {
+          clickedInsideButton = true;
+        }
+      });
+
+      if (!clickedInsideDropdown && !clickedInsideButton) {
         showGenreDropdown = false;
+        showActorDropdown = false;
+        showDirectorDropdown = false;
+        showCountryDropdown = false;
       }
     }
 
@@ -276,15 +289,15 @@
 
   function selectDirector(director: string) {
     selectedDirector = director;
-    showDirectorDropdown = false; // 🔹 Cierra el dropdown
-    directorSearchTerm = ""; // 🔹 Limpia el input de búsqueda
+    showDirectorDropdown = false;
+    directorSearchTerm = "";
     updateFilters({ director });
   }
 
   function selectCountry(country: string) {
     selectedCountry = country;
-    showCountryDropdown = false; // 🔹 Cierra el dropdown
-    countrySearchTerm = ""; // 🔹 Limpia el input de búsqueda
+    showCountryDropdown = false;
+    countrySearchTerm = "";
     updateFilters({ pais: country });
   }
 </script>
@@ -327,7 +340,7 @@
     <div class="relative">
       <button
         id="genre-button"
-        class="border p-2 rounded bg-gray-100 hover:bg-gray-200"
+        class="filter-button border p-2 rounded bg-gray-100 hover:bg-gray-200"
         on:click={() => (showGenreDropdown = !showGenreDropdown)}
       >
         Géneros
@@ -336,7 +349,7 @@
       {#if showGenreDropdown}
         <div
           id="genre-dropdown"
-          class="absolute top-full left-0 w-48 bg-white border rounded shadow-lg z-50 max-h-60 overflow-auto mt-2"
+          class="dropdown-menu absolute top-full left-0 w-48 bg-white border rounded shadow-lg z-50 max-h-60 overflow-auto mt-2"
         >
           <div class="sticky top-0 bg-white p-2 border-b">
             <input
@@ -364,7 +377,7 @@
     <div class="relative">
       <button
         id="actor-button"
-        class="border p-2 rounded bg-gray-100 hover:bg-gray-200"
+        class="filter-button border p-2 rounded bg-gray-100 hover:bg-gray-200"
         on:click={() => (showActorDropdown = !showActorDropdown)}
       >
         Actores
@@ -373,7 +386,7 @@
       {#if showActorDropdown}
         <div
           id="actor-dropdown"
-          class="absolute top-full left-0 w-48 bg-white border rounded shadow-lg z-50 max-h-60 overflow-auto mt-2"
+          class="dropdown-menu absolute top-full left-0 w-48 bg-white border rounded shadow-lg z-50 max-h-60 overflow-auto mt-2"
         >
           <div class="sticky top-0 bg-white p-2 border-b">
             <input
@@ -401,7 +414,7 @@
     <div class="relative">
       <button
         id="director-button"
-        class="border p-2 rounded bg-gray-100 hover:bg-gray-200"
+        class="filter-button border p-2 rounded bg-gray-100 hover:bg-gray-200"
         on:click={() => (showDirectorDropdown = !showDirectorDropdown)}
       >
         {selectedDirector ? selectedDirector : "Director"}
@@ -410,7 +423,7 @@
       {#if showDirectorDropdown}
         <div
           id="director-dropdown"
-          class="absolute top-full left-0 w-48 bg-white border rounded shadow-lg z-50 max-h-60 overflow-auto mt-2"
+          class="dropdown-menu absolute top-full left-0 w-48 bg-white border rounded shadow-lg z-50 max-h-60 overflow-auto mt-2"
         >
           <div class="sticky top-0 bg-white p-2 border-b">
             <input
@@ -419,6 +432,10 @@
               placeholder="Buscar director..."
               class="border p-2 rounded w-full"
             />
+          </div>
+
+          <div class="p-2 hover:bg-gray-200 cursor-pointer" on:click={() => selectDirector(null)}>
+            ❌ Ninguno
           </div>
 
           {#each allDirectors.filter((d) => d
@@ -438,7 +455,7 @@
     <div class="relative">
       <button
         id="country-button"
-        class="border p-2 rounded bg-gray-100 hover:bg-gray-200"
+        class="filter-button border p-2 rounded bg-gray-100 hover:bg-gray-200"
         on:click={() => (showCountryDropdown = !showCountryDropdown)}
       >
         {selectedCountry ? selectedCountry : "País"}
@@ -447,7 +464,7 @@
       {#if showCountryDropdown}
         <div
           id="country-dropdown"
-          class="absolute top-full left-0 w-48 bg-white border rounded shadow-lg z-50 max-h-60 overflow-auto mt-2"
+          class="dropdown-menu absolute top-full left-0 w-48 bg-white border rounded shadow-lg z-50 max-h-60 overflow-auto mt-2"
         >
           <div class="sticky top-0 bg-white p-2 border-b">
             <input
@@ -456,6 +473,10 @@
               placeholder="Buscar país..."
               class="border p-2 rounded w-full"
             />
+          </div>
+
+          <div class="p-2 hover:bg-gray-200 cursor-pointer" on:click={() => selectCountry(null)}>
+            ❌ Ninguno
           </div>
 
           {#each allCountries.filter((c) => c
@@ -471,6 +492,26 @@
         </div>
       {/if}
     </div>
+  </div>
+
+  <div class="flex flex-wrap gap-2 mt-2">
+    {#each selectedGenres as genre}
+      <div class="flex items-center bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+        {genre}
+        <button class="ml-2 text-red-500 hover:text-red-700" on:click={() => removeGenre(genre)}>
+          ✕
+        </button>
+      </div>
+    {/each}
+  
+    {#each selectedActors as actor}
+      <div class="flex items-center bg-green-100 text-green-700 px-3 py-1 rounded-full">
+        {actor}
+        <button class="ml-2 text-red-500 hover:text-red-700" on:click={() => removeActor(actor)}>
+          ✕
+        </button>
+      </div>
+    {/each}
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
